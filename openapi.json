@@ -1,0 +1,334 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Serverless Authentication API",
+      "description": "API that manages authentication for two users using JWT",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://your-function-app-name.azurewebsites.net/api"
+      }
+    ],
+    "paths": {
+      "/login": {
+        "post": {
+          "summary": "Login to get JWT token",
+          "description": "Authenticates a user and returns a JWT token",
+          "operationId": "login",
+          "requestBody": {
+            "description": "User credentials",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful login",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/user1-endpoint": {
+        "get": {
+          "summary": "User1's exclusive endpoint",
+          "description": "An endpoint that only User1 can access",
+          "operationId": "user1Endpoint",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User1Response"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/user2-endpoint": {
+        "get": {
+          "summary": "User2's exclusive endpoint",
+          "description": "An endpoint that only User2 can access",
+          "operationId": "user2Endpoint",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User2Response"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Forbidden",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/shared-endpoint": {
+        "get": {
+          "summary": "Shared endpoint",
+          "description": "An endpoint that both User1 and User2 can access",
+          "operationId": "sharedEndpoint",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SharedResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "LoginRequest": {
+          "type": "object",
+          "required": [
+            "username",
+            "password"
+          ],
+          "properties": {
+            "username": {
+              "type": "string",
+              "example": "user1"
+            },
+            "password": {
+              "type": "string",
+              "example": "password1"
+            }
+          }
+        },
+        "LoginResponse": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            }
+          }
+        },
+        "User1Response": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "Welcome to User1's exclusive endpoint"
+            },
+            "user": {
+              "type": "string",
+              "example": "User One"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "exclusive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "role": {
+                  "type": "string",
+                  "example": "user1"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        },
+        "User2Response": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "Welcome to User2's exclusive endpoint"
+            },
+            "user": {
+              "type": "string",
+              "example": "User Two"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "exclusive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "role": {
+                  "type": "string",
+                  "example": "user2"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        },
+        "SharedResponse": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "example": "Welcome to the shared endpoint"
+            },
+            "user": {
+              "type": "string",
+              "example": "User One"
+            },
+            "role": {
+              "type": "string",
+              "example": "user1"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "shared": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        },
+        "ErrorResponse": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "example": "Unauthorized: Invalid token"
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": "JWT token obtained from login endpoint"
+        }
+      }
+    }
+  }

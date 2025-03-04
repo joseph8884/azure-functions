@@ -1,0 +1,19 @@
+{
+  "name": "serverless-auth-api",
+  "version": "1.0.0",
+  "description": "Serverless API with JWT authentication for two users",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "az": "^0.2.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.0.5198"
+  }
+}
