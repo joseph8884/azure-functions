@@ -1,13 +1,4 @@
-// File structure:
-// - index.js (main entry point)
-// - auth.js (authentication utilities)
-// - endpoints.js (API endpoint handlers)
-// - database.js (mock database)
-// - function.json (Azure Functions configuration)
-// - package.json (project dependencies)
-// - openapi.json (OpenAPI specification)
-
-// index.js
+// api/index.js
 const auth = require('../auth');
 const endpoints = require('../endpoints');
 const { getUserById } = require('../database');
